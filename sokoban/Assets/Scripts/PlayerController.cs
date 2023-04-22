@@ -15,9 +15,9 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool isMoveUp = false;
     private int direction = 0;
-    private Vector2 checkPosition;
     private Vector2 currentPos;
     private Vector2 movePoint;
+    private ArrayList directions = new();
     private SpriteRenderer sprite;
     private Animator anim;
 
@@ -32,16 +32,40 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log(isMoving);
         // Current Position
         currentPos = transform.position;
-        // Check Direction
-        //isMoving? direction : 
-        if (!isMoving)
+
+        // Input Queue
+        // This will give the effects that the next input would be consider
+        // when the previous one is released
+        if (KeyUpHold() && !directions.Contains(1))
         {
-            direction = KeyUp() ? 1 : KeyDown() ? 2 : KeyLeft() ? 3 : KeyRight() ? 4 : direction;
+            directions.Add(1);
         }
+        else if (KeyDownHold() && !directions.Contains(2))
+        {
+            directions.Add(2);
+        }
+        else if (KeyLeftHold() && !directions.Contains(3))
+        {
+            directions.Add(3);
+        }
+        else if (KeyRightHold() && !directions.Contains(4))
+        {
+            directions.Add(4);
+        }
+
+        // Dequeue on release
+        directions.Remove(KeyUpUp() ? 1 : KeyDownUp() ? 2 : KeyLeftUp() ? 3 : KeyRightUp() ? 4 : 0);
+
+        // Check Direction
+        // Change direction using the first direction in the queue
+        direction = isMoving ? direction : directions.Count > 0 ? (int)directions[0] : direction;
+        // Change animation state to the moving direction,
+        // Otherwise snap to idle of that current direction
         anim.SetInteger("state", isMoving ? direction : 0);
+
+        // Update check point
         switch (direction)
         {
             case 1:
@@ -60,6 +84,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
+        // Update move toward point if previous action is finished
         if (!isMoving && KeyDirectionAny())
         {
             isMoving = true;
@@ -76,40 +101,6 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-
-        //if (!isMoving && KeyUp())
-        //{
-        //    isMoving = true;
-        //    isFaceUp = true;
-        //    anim.SetInteger("state", 1);
-        //    //movePoint = Physics2D.OverlapCircle(checkPosition, checkRadius, collide) ? transform.position : checkPosition;
-        //    movePoint = checkPosition;
-        //    Debug.Log(Physics2D.OverlapCircle(checkPosition, checkRadius, collide));
-        //}
-        //else if (!isMoving && KeyDown())
-        //{
-        //    isMoving = true;
-        //    sprite.sortingOrder++; // Update layer first when moving down
-        //    anim.SetInteger("state", 2);
-        //    movePoint = checkPosition;
-        //    Debug.Log(Physics2D.OverlapCircle(checkPosition, checkRadius, collide));
-        //}
-        //else if (!isMoving && KeyLeft())
-        //{
-        //    isMoving = true;
-        //    anim.SetInteger("state", 3);
-        //    movePoint = checkPosition;
-        //    Debug.Log(Physics2D.OverlapCircle(checkPosition, checkRadius, collide));
-        //}
-        //else if (!isMoving && KeyRight())
-        //{
-        //    isMoving = true;
-        //    anim.SetInteger("state", 4);
-        //    movePoint = checkPosition;
-        //    Debug.Log(Physics2D.OverlapCircle(checkPosition, checkRadius, collide));
-        //}
-
-        //movePoint = Physics2D.OverlapCircle(checkPosition, checkRadius, collide) ? movePoint : checkPosition;
 
         // Move
         if (isMoving && Distance() > 0f)
@@ -146,29 +137,48 @@ public class PlayerController : MonoBehaviour
         return Mathf.Sqrt(Mathf.Pow(x1 - x2, 2) + Mathf.Pow(y1 - y2, 2));
     }
 
-    private bool KeyUp()
+    private bool KeyUpHold()
     {
         return Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
     }
 
-    private bool KeyDown()
+    private bool KeyUpUp()
     {
-        return Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
-        //return Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S);
+        return Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
     }
 
-    private bool KeyLeft()
+    private bool KeyDownHold()
+    {
+        return Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
+    }
+
+    private bool KeyDownUp()
+    {
+        return Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S);
+    }
+
+    private bool KeyLeftHold()
     {
         return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
     }
 
-    private bool KeyRight()
+    private bool KeyLeftUp()
+    {
+        return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
+    }
+
+    private bool KeyRightHold()
     {
         return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
     }
 
+    private bool KeyRightUp()
+    {
+        return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
+    }
+
     private bool KeyDirectionAny()
     {
-        return KeyUp() || KeyDown() || KeyLeft() || KeyRight();
+        return KeyUpHold() || KeyDownHold() || KeyLeftHold() || KeyRightHold();
     }
 }
