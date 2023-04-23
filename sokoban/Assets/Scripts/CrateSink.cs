@@ -9,6 +9,7 @@ public class CrateSink : MonoBehaviour
     [SerializeField] private GameObject crate;
     [SerializeField] private GameObject top;
     [SerializeField] private GameObject obstacle;
+    [SerializeField] private AudioSource sfxCrateSink;
 
     private bool isSinking = false;
     private bool sunk = false;
@@ -47,6 +48,8 @@ public class CrateSink : MonoBehaviour
 
             crateSprite.sortingOrder = 0;
             //topSprite.sortingOrder = 1;
+
+            sfxCrateSink.Play();
         }
 
         if (isSinking)

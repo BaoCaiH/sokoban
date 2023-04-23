@@ -7,6 +7,7 @@ public class CrateMove : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private LayerMask obstacle;
+    [SerializeField] private AudioSource sfxCrateSlide;
 
     private bool isMoving = false;
     private Vector2 movePoint;
@@ -46,6 +47,7 @@ public class CrateMove : MonoBehaviour
         {
             movePoint = (Vector2)transform.position + pushVector;
             isMoving = true;
+            sfxCrateSlide.Play();
         }
     }
 }
