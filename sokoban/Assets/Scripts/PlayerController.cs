@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float distanceHorizontal;
     [SerializeField] private float distanceVertical;
-    [SerializeField] private float lagTime;
     [SerializeField] private float checkRadius = 0.2f;
     [SerializeField] private Transform checkFront;
     [SerializeField] private LayerMask wall;
@@ -25,7 +24,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        movePoint = transform.position;
+        checkPos= transform.position;
+        //movePoint = transform.position;
         //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
