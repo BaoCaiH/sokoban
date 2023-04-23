@@ -29,8 +29,8 @@ public class CrateSink : MonoBehaviour
         crateCollider = transform.GetComponent<Collider2D>();
         obstacleCollider = obstacle.GetComponent<Collider2D>();
 
+        // Get the artificial-relative distance of the top from the object center
         sinkDistance = top.transform.position.y - transform.position.y;
-        Debug.Log(sinkDistance);
         remainDistance = sinkDistance;
     }
 
