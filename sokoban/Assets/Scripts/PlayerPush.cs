@@ -35,7 +35,6 @@ public class PlayerPush : MonoBehaviour
         }
         if (foundCrate is not null)
         {
-            //Debug.Log("Push: " + direction);
             foundCrate.gameObject.GetComponent<CrateMove>().Push(direction);
         }
     }

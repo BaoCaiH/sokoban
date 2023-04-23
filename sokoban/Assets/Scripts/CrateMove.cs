@@ -15,8 +15,6 @@ public class CrateMove : MonoBehaviour
     private void Start()
     {
         movePoint = transform.position;
-        //movePoint = (Vector2)transform.position + Vector2.down;
-        //Push(Vector2.down);
     }
 
     // Update is called once per frame
@@ -44,8 +42,6 @@ public class CrateMove : MonoBehaviour
     public void Push(Vector2 pushVector)
     {
         Vector2 checkPos = (Vector2)transform.position + pushVector / 2;
-        //Debug.Log("Pushed: " + checkPos);
-        Debug.Log("Collided with: " + Physics2D.OverlapCircleAll(checkPos, checkRadius, obstacle).Length);
         if (!isMoving && Physics2D.OverlapCircleAll(checkPos, checkRadius, obstacle).Length < 2)
         {
             movePoint = (Vector2)transform.position + pushVector;
