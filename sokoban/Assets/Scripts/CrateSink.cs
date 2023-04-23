@@ -13,8 +13,7 @@ public class CrateSink : MonoBehaviour
     private bool isSinking = false;
     private bool sunk = false;
     private float sinkDistance;
-    private Vector2 crateMovePoint;
-    private Vector2 topMovePoint;
+    private float remainDistance;
     private SpriteRenderer crateSprite;
     private SpriteRenderer topSprite;
     private SpriteRenderer landingSprite;
@@ -30,7 +29,9 @@ public class CrateSink : MonoBehaviour
         crateCollider = transform.GetComponent<Collider2D>();
         obstacleCollider = obstacle.GetComponent<Collider2D>();
 
-        sinkDistance = top.transform.position.y;
+        sinkDistance = top.transform.position.y - transform.position.y;
+        Debug.Log(sinkDistance);
+        remainDistance = sinkDistance;
     }
 
     // Update is called once per frame
@@ -43,8 +44,6 @@ public class CrateSink : MonoBehaviour
             landingSprite.enabled = false;
             crateCollider.enabled = false;
             obstacleCollider.enabled = false;
-            crateMovePoint = (Vector2)crate.transform.position - new Vector2(0f, sinkDistance);
-            topMovePoint = landing.transform.position; // + new Vector2(0f, -sinkDistance);
 
             crateSprite.sortingOrder = 0;
             //topSprite.sortingOrder = 1;
@@ -52,30 +51,22 @@ public class CrateSink : MonoBehaviour
 
         if (isSinking)
         {
-            Debug.Log("Crate " + crate.transform.position + " move to: " + crateMovePoint);
-            Sink(crate, crateMovePoint, -1);
-            Sink(top, topMovePoint);
-            sunk = Vector2.Distance(crate.transform.position, crateMovePoint) < .001f
-                && Vector2.Distance(top.transform.position, topMovePoint) < .001f;
+            Sinking();
+            sunk = remainDistance == 0f;
             isSinking = !sunk;
-
+        }
+        if (sunk)
+        {
+            crateSprite.sortingOrder = -1;
+            topSprite.sortingOrder = 0;
         }
     }
 
-    private void Sink(GameObject obj, Vector2 dest, int order = 0)
+    private void Sinking()
     {
-        float dist = Vector2.Distance(obj.transform.position, dest);
-        if (dist > 0f)
-        {
-            obj.transform.position = Vector2.MoveTowards(
-                obj.transform.position,
-                dest,
-                Mathf.Clamp(speed * Time.deltaTime, -dist, dist)
-            );
-        }
-        else
-        {
-            obj.GetComponent<SpriteRenderer>().sortingOrder = order;
-        }
+        float offset = Mathf.Clamp(speed * Time.deltaTime, 0, remainDistance);
+        crate.transform.position -= new Vector3(0f, offset, 0f);
+        top.transform.position -= new Vector3(0f, offset, 0f);
+        remainDistance -= offset;
     }
 }
