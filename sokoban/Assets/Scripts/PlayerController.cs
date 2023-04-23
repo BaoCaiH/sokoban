@@ -93,14 +93,14 @@ public class PlayerController : MonoBehaviour
         if (!isMoving && KeyDirectionAny() && !Physics2D.OverlapCircle(
                     checkFront.position,
                     checkRadius, wall
-                ))
+        ))
         {
-            Debug.Log(
-                Physics2D.OverlapCircle(
-                    checkFront.position,
-                    checkRadius, wall
-                )
-            );
+            //Debug.Log(
+            //    Physics2D.OverlapCircle(
+            //        checkFront.position,
+            //        checkRadius, wall
+            //    )
+            //);
             isMoving = true;
             movePoint = checkPos;
             //switch (direction)
