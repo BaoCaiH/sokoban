@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
             isMoving = true;
             movePoint = movePos;
         }
+        // Only push if not moving
         else if (!isMoving)
         {
             if (pushVector != Vector2.zero)
