@@ -47,6 +47,5 @@ public class CrateMove : MonoBehaviour
             movePoint = (Vector2)transform.position + pushVector;
             isMoving = true;
         }
-        Debug.Log(movePoint);
     }
 }
