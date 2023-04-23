@@ -3262,6 +3262,9 @@ MonoBehaviour:
   wall:
     serializedVersion: 2
     m_Bits: 64
+  crate:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!95 &1794711097
 Animator:
   serializedVersion: 5
@@ -3294,11 +3297,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88883e305e12c4bb3b2b6470e1019510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkRadius: 0.45
-  checkFront: {fileID: 918807856}
-  crate:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &1801052660
 GameObject:
   m_ObjectHideFlags: 0

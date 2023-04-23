@@ -7,24 +7,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float distanceHorizontal;
     [SerializeField] private float distanceVertical;
-    [SerializeField] private float checkRadius = 0.2f;
+    [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private Transform checkFront;
     [SerializeField] private LayerMask wall;
+    [SerializeField] private LayerMask crate;
 
     private bool isMoving = false;
     //private bool isMoveUp = false;
     private int direction = 0;
+    private float pushHorizontal;
+    private float pushVertical;
     private Vector2 currentPos;
-    private Vector2 checkPos;
+    private Vector2 movePos;
     private Vector2 movePoint;
+    private Vector2 pushVector;
     private ArrayList directions = new();
     //private SpriteRenderer sprite;
     private Animator anim;
+    private Collider2D foundCrate;
 
     // Start is called before the first frame update
     private void Start()
     {
-        checkPos= transform.position;
+        movePos= transform.position;
         //movePoint = transform.position;
         //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -35,6 +40,16 @@ public class PlayerController : MonoBehaviour
     {
         // Current Position
         currentPos = transform.position;
+
+        // Input axes
+        pushVertical = Input.GetAxisRaw("Vertical");
+        pushHorizontal = Input.GetAxisRaw("Horizontal");
+        pushVector = pushVertical > 0f ? Vector2.up
+            : pushVertical < 0f ? Vector2.down
+            : pushHorizontal > 0f ? Vector2.right
+            : pushHorizontal < 0f ? Vector2.left
+            : Vector2.zero;
+        foundCrate = null;
 
         // Input Queue
         // This will give the effects that the next input would be consider
@@ -70,19 +85,19 @@ public class PlayerController : MonoBehaviour
         switch (direction)
         {
             case 1:
-                checkPos = new Vector2(currentPos.x, currentPos.y + distanceVertical);
+                movePos = new Vector2(currentPos.x, currentPos.y + distanceVertical);
                 checkFront.position = new Vector2(currentPos.x, currentPos.y + distanceVertical / 2);
                 break;
             case 2:
-                checkPos = new Vector2(currentPos.x, currentPos.y - distanceVertical);
+                movePos = new Vector2(currentPos.x, currentPos.y - distanceVertical);
                 checkFront.position = new Vector2(currentPos.x, currentPos.y - distanceVertical / 2);
                 break;
             case 3:
-                checkPos = new Vector2(currentPos.x - distanceHorizontal, currentPos.y);
+                movePos = new Vector2(currentPos.x - distanceHorizontal, currentPos.y);
                 checkFront.position = new Vector2(currentPos.x - distanceHorizontal / 2, currentPos.y);
                 break;
             case 4:
-                checkPos = new Vector2(currentPos.x + distanceHorizontal, currentPos.y);
+                movePos = new Vector2(currentPos.x + distanceHorizontal, currentPos.y);
                 checkFront.position = new Vector2(currentPos.x + distanceHorizontal / 2, currentPos.y);
                 break;
             default:
@@ -91,44 +106,33 @@ public class PlayerController : MonoBehaviour
 
         // Update move toward point if previous action is finished
         if (!isMoving && KeyDirectionAny() && !Physics2D.OverlapCircle(
-                    checkFront.position,
-                    checkRadius, wall
+            checkFront.position,
+            checkRadius, wall
         ))
         {
-            //Debug.Log(
-            //    Physics2D.OverlapCircle(
-            //        checkFront.position,
-            //        checkRadius, wall
-            //    )
-            //);
             isMoving = true;
-            movePoint = checkPos;
-            //switch (direction)
-            //{
-            //    case 1:
-            //        isMoveUp = true;
-            //        break;
-            //    case 2:
-            //        sprite.sortingOrder++;
-            //        break;
-            //    default:
-            //        break;
-            //}
+            movePoint = movePos;
+        }
+        else if (!isMoving)
+        {
+            if (pushVector != Vector2.zero)
+            {
+                foundCrate = Physics2D.OverlapCircle((Vector2)transform.position + pushVector / 2, checkRadius, crate);
+            }
+            if (foundCrate is not null)
+            {
+                foundCrate.gameObject.GetComponent<CrateMove>().Push(pushVector);
+            }
         }
 
-        // Move
-        if (isMoving && Distance() > 0f)
+            // Move
+            if (isMoving && Distance() > 0f)
         {
             MoveTowards();
         }
         else if (isMoving)
         {
             isMoving = false;
-            //if (isMoveUp)
-            //{
-            //    sprite.sortingOrder--;
-            //    isMoveUp = false;
-            //}
         }
     }
 
