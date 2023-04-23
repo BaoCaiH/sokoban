@@ -10,13 +10,11 @@ public class CrateSink : MonoBehaviour
     [SerializeField] private GameObject top;
     [SerializeField] private GameObject obstacle;
 
-    private bool isSink = false;
+    private bool isSinking = false;
+    private bool sunk = false;
     private float sinkDistance;
     private Vector2 crateMovePoint;
     private Vector2 topMovePoint;
-    private Transform crateTransform;
-    private Transform topTransform;
-    private Transform landingTransform;
     private SpriteRenderer crateSprite;
     private SpriteRenderer topSprite;
     private SpriteRenderer landingSprite;
@@ -26,55 +24,58 @@ public class CrateSink : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        crateTransform = crate.transform;
-        topTransform = top.transform;
-        landingTransform = landing.transform;
         crateSprite = crate.GetComponent<SpriteRenderer>();
         topSprite = top.GetComponent<SpriteRenderer>();
         landingSprite = landing.GetComponent<SpriteRenderer>();
         crateCollider = transform.GetComponent<Collider2D>();
         obstacleCollider = obstacle.GetComponent<Collider2D>();
 
-        sinkDistance = topTransform.position.y;
-        crateMovePoint = (Vector2)landingTransform.position + new Vector2(0f, -sinkDistance);
-        topMovePoint = landingTransform.position;
+        sinkDistance = top.transform.position.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(transform.position, landingTransform.position) < .1f)
+
+        if (!isSinking && !sunk && Vector2.Distance(transform.position, landing.transform.position) < .1f)
         {
+            isSinking = true;
             landingSprite.enabled = false;
+            crateCollider.enabled = false;
+            obstacleCollider.enabled = false;
+            crateMovePoint = (Vector2)crate.transform.position - new Vector2(0f, sinkDistance);
+            topMovePoint = landing.transform.position; // + new Vector2(0f, -sinkDistance);
+
             crateSprite.sortingOrder = 0;
-            topSprite.sortingOrder = 1;
-            isSink = true;
+            //topSprite.sortingOrder = 1;
         }
 
-        if (isSink)
+        if (isSinking)
         {
-            Sink(crateTransform, crateMovePoint);
-            Sink(topTransform, topMovePoint);
+            Debug.Log("Crate " + crate.transform.position + " move to: " + crateMovePoint);
+            Sink(crate, crateMovePoint, -1);
+            Sink(top, topMovePoint);
+            sunk = Vector2.Distance(crate.transform.position, crateMovePoint) < .001f
+                && Vector2.Distance(top.transform.position, topMovePoint) < .001f;
+            isSinking = !sunk;
+
         }
     }
 
-    private void Sink(Transform obj, Vector2 dest)
+    private void Sink(GameObject obj, Vector2 dest, int order = 0)
     {
-        if (Vector2.Distance(obj.position, dest) > 0f)
+        float dist = Vector2.Distance(obj.transform.position, dest);
+        if (dist > 0f)
         {
-            obj.position = Vector2.MoveTowards(
-                obj.position,
+            obj.transform.position = Vector2.MoveTowards(
+                obj.transform.position,
                 dest,
-                speed * Time.deltaTime
+                Mathf.Clamp(speed * Time.deltaTime, -dist, dist)
             );
         }
         else
         {
-            crateSprite.sortingOrder--;
-            topSprite.sortingOrder--;
-            isSink = false;
-            crateCollider.enabled = false;
-            obstacleCollider.enabled = false;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = order;
         }
     }
 }
