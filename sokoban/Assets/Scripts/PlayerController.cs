@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform checkFront;
     [SerializeField] private LayerMask wall;
     [SerializeField] private LayerMask crate;
+    [SerializeField] private AudioSource sfxWalk;
 
     private bool isMoving = false;
     //private bool isMoveUp = false;
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        movePos= transform.position;
+        movePos = transform.position;
         //movePoint = transform.position;
         //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -112,6 +113,7 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
             movePoint = movePos;
+            sfxWalk.Play();
         }
         // Only push if not moving
         else if (!isMoving)
@@ -126,8 +128,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-            // Move
-            if (isMoving && Distance() > 0f)
+        // Move
+        if (isMoving && Distance() > 0f)
         {
             MoveTowards();
         }
