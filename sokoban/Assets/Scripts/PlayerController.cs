@@ -8,24 +8,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float distanceHorizontal;
     [SerializeField] private float distanceVertical;
     [SerializeField] private float lagTime;
-    [SerializeField] private float checkRadius = 0.5f;
+    [SerializeField] private float checkRadius = 0.2f;
     [SerializeField] private Transform checkFront;
-    [SerializeField] private LayerMask collide;
+    [SerializeField] private LayerMask wall;
 
     private bool isMoving = false;
-    private bool isMoveUp = false;
+    //private bool isMoveUp = false;
     private int direction = 0;
     private Vector2 currentPos;
+    private Vector2 checkPos;
     private Vector2 movePoint;
     private ArrayList directions = new();
-    private SpriteRenderer sprite;
+    //private SpriteRenderer sprite;
     private Animator anim;
 
     // Start is called before the first frame update
     private void Start()
     {
         movePoint = transform.position;
-        sprite = GetComponent<SpriteRenderer>();
+        //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
 
@@ -69,37 +70,50 @@ public class PlayerController : MonoBehaviour
         switch (direction)
         {
             case 1:
-                checkFront.position = new Vector2(currentPos.x, currentPos.y + distanceVertical);
+                checkPos = new Vector2(currentPos.x, currentPos.y + distanceVertical);
+                checkFront.position = new Vector2(currentPos.x, currentPos.y + distanceVertical / 2);
                 break;
             case 2:
-                checkFront.position = new Vector2(currentPos.x, currentPos.y - distanceVertical);
+                checkPos = new Vector2(currentPos.x, currentPos.y - distanceVertical);
+                checkFront.position = new Vector2(currentPos.x, currentPos.y - distanceVertical / 2);
                 break;
             case 3:
-                checkFront.position = new Vector2(currentPos.x - distanceHorizontal, currentPos.y);
+                checkPos = new Vector2(currentPos.x - distanceHorizontal, currentPos.y);
+                checkFront.position = new Vector2(currentPos.x - distanceHorizontal / 2, currentPos.y);
                 break;
             case 4:
-                checkFront.position = new Vector2(currentPos.x + distanceHorizontal, currentPos.y);
+                checkPos = new Vector2(currentPos.x + distanceHorizontal, currentPos.y);
+                checkFront.position = new Vector2(currentPos.x + distanceHorizontal / 2, currentPos.y);
                 break;
             default:
                 break;
         }
 
         // Update move toward point if previous action is finished
-        if (!isMoving && KeyDirectionAny())
+        if (!isMoving && KeyDirectionAny() && !Physics2D.OverlapCircle(
+                    checkFront.position,
+                    checkRadius, wall
+        ))
         {
+            //Debug.Log(
+            //    Physics2D.OverlapCircle(
+            //        checkFront.position,
+            //        checkRadius, wall
+            //    )
+            //);
             isMoving = true;
-            movePoint = checkFront.position;
-            switch (direction)
-            {
-                case 1:
-                    isMoveUp = true;
-                    break;
-                case 2:
-                    sprite.sortingOrder++;
-                    break;
-                default:
-                    break;
-            }
+            movePoint = checkPos;
+            //switch (direction)
+            //{
+            //    case 1:
+            //        isMoveUp = true;
+            //        break;
+            //    case 2:
+            //        sprite.sortingOrder++;
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         // Move
@@ -110,11 +124,11 @@ public class PlayerController : MonoBehaviour
         else if (isMoving)
         {
             isMoving = false;
-            if (isMoveUp)
-            {
-                sprite.sortingOrder--;
-                isMoveUp = false;
-            }
+            //if (isMoveUp)
+            //{
+            //    sprite.sortingOrder--;
+            //    isMoveUp = false;
+            //}
         }
     }
 
@@ -129,12 +143,7 @@ public class PlayerController : MonoBehaviour
 
     private float Distance()
     {
-        Vector2 curr = transform.position;
-        float x1 = curr.x;
-        float y1 = curr.y;
-        float x2 = movePoint.x;
-        float y2 = movePoint.y;
-        return Mathf.Sqrt(Mathf.Pow(x1 - x2, 2) + Mathf.Pow(y1 - y2, 2));
+        return Vector2.Distance(transform.position, movePoint);
     }
 
     private bool KeyUpHold()
