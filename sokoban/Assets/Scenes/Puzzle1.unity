@@ -1201,9 +1201,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8434279339453130068, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+      propertyPath: sinkable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434279339453130069, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+      propertyPath: movable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8434279339453130070, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
@@ -3849,9 +3857,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8434279339453130068, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+      propertyPath: sinkable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434279339453130069, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+      propertyPath: movable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8434279339453130070, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
