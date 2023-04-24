@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 236747293302445260, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 296646066946193405, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -69,11 +73,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8434279339268129159, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
       propertyPath: m_Name
-      value: Crate (2)
+      value: UnsinkableCrate
       objectReference: {fileID: 0}
     - target: {fileID: 8434279339453130068, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
       propertyPath: sinkable
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1498751249216399942, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
+    - {fileID: 296646066946193405, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 350944e3c96bd4de88d232aec4546663, type: 3}
