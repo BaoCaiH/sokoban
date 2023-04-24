@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CrateSink : MonoBehaviour
 {
+    [SerializeField] private bool sinkable = true;
     [SerializeField] private float speed = 1f;
     [SerializeField] private GameObject landing;
     [SerializeField] private GameObject crate;
@@ -38,13 +39,11 @@ public class CrateSink : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (!isSinking && !sunk && Vector2.Distance(transform.position, landing.transform.position) < .1f)
+        if (sinkable && !isSinking && !sunk && Vector2.Distance(transform.position, landing.transform.position) < .1f)
         {
             isSinking = true;
             landingSprite.enabled = false;
-            crateCollider.enabled = false;
-            obstacleCollider.enabled = false;
+            transform.GetComponent<CrateMove>().movable = false;
 
             crateSprite.sortingOrder = 0;
             //topSprite.sortingOrder = 1;
@@ -62,6 +61,8 @@ public class CrateSink : MonoBehaviour
         {
             crateSprite.sortingOrder = -1;
             topSprite.sortingOrder = 0;
+            crateCollider.enabled = false;
+            obstacleCollider.enabled = false;
         }
     }
 

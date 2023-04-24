@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CrateMove : MonoBehaviour
 {
+    [SerializeField] public bool movable = true;
     [SerializeField] private float speed;
     [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private LayerMask obstacle;
@@ -43,7 +44,7 @@ public class CrateMove : MonoBehaviour
     public void Push(Vector2 pushVector)
     {
         Vector2 checkPos = (Vector2)transform.position + pushVector / 2;
-        if (!isMoving && Physics2D.OverlapCircleAll(checkPos, checkRadius, obstacle).Length < 2)
+        if (movable && !isMoving && Physics2D.OverlapCircleAll(checkPos, checkRadius, obstacle).Length < 2)
         {
             movePoint = (Vector2)transform.position + pushVector;
             isMoving = true;
