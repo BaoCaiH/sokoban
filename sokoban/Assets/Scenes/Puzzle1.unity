@@ -686,7 +686,7 @@ AudioSource:
   m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -3745,6 +3745,67 @@ Transform:
   m_Father: {fileID: 409830289}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &6598619433970905513
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6598619435399040440, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040442, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040443, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: crates
+      value: 
+      objectReference: {fileID: 1801052660}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
 --- !u!1001 &8434279338362622399
 PrefabInstance:
   m_ObjectHideFlags: 0
