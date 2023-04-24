@@ -21,6 +21,7 @@ public class CrateSink : MonoBehaviour
     private SpriteRenderer landingSprite;
     private Collider2D crateCollider;
     private Collider2D obstacleCollider;
+    private Collider2D landingCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class CrateSink : MonoBehaviour
         landingSprite = landing.GetComponent<SpriteRenderer>();
         crateCollider = transform.GetComponent<Collider2D>();
         obstacleCollider = obstacle.GetComponent<Collider2D>();
+        landingCollider = landing.GetComponent<Collider2D>();
 
         // Get the artificial-relative distance of the top from the object center
         sinkDistance = top.transform.position.y - transform.position.y;
@@ -43,6 +45,7 @@ public class CrateSink : MonoBehaviour
         {
             isSinking = true;
             landingSprite.enabled = false;
+            landingCollider.enabled = false;
             transform.GetComponent<CrateMove>().BecomeRigid();
 
             crateSprite.sortingOrder = 0;

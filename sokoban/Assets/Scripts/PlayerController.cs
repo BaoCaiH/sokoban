@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private bool isDead = false;
     [SerializeField] private float speed;
     [SerializeField] private float distanceHorizontal;
     [SerializeField] private float distanceVertical;
@@ -13,18 +15,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wall;
     [SerializeField] private LayerMask crate;
     [SerializeField] private AudioSource sfxWalk;
+    [SerializeField] private LayerMask pit;
 
     private bool isMoving = false;
-    //private bool isMoveUp = false;
     private int direction = 0;
+    private int directionHorizontal;
+    private int directionVertical;
     private float pushHorizontal;
     private float pushVertical;
     private Vector2 currentPos;
     private Vector2 movePos;
     private Vector2 movePoint;
     private Vector2 pushVector;
+    private Vector2 checkBack;
     private ArrayList directions = new();
-    //private SpriteRenderer sprite;
     private Animator anim;
     private Collider2D foundCrate;
     private InputAction joystickMoveAction;
@@ -33,8 +37,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         movePos = transform.position;
-        //movePoint = transform.position;
-        //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         joystickMoveAction = GetComponent<PlayerInput>().actions["Move"];
     }
@@ -42,6 +44,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (isDead) {return;}
+
         // Current Position
         currentPos = transform.position;
 
@@ -76,10 +80,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // Dequeue on release
-        //if (joystickMoveAction.ReadValue<Vector2>() == Vector2.zero)
-        //{
-        //    directions.Clear();
-        //}
         directions.Remove(KeyUpUp() ? 1 : KeyDownUp() ? 2 : KeyLeftUp() ? 3 : KeyRightUp() ? 4 : 0);
 
         // Check Direction
@@ -94,27 +94,20 @@ public class PlayerController : MonoBehaviour
         anim.SetInteger("state", isMoving ? direction : 0);
 
         // Update check point
-        switch (direction)
-        {
-            case 1:
-                movePos = new Vector2(currentPos.x, currentPos.y + distanceVertical);
-                checkFront.position = new Vector2(currentPos.x, currentPos.y + distanceVertical / 2);
-                break;
-            case 2:
-                movePos = new Vector2(currentPos.x, currentPos.y - distanceVertical);
-                checkFront.position = new Vector2(currentPos.x, currentPos.y - distanceVertical / 2);
-                break;
-            case 3:
-                movePos = new Vector2(currentPos.x - distanceHorizontal, currentPos.y);
-                checkFront.position = new Vector2(currentPos.x - distanceHorizontal / 2, currentPos.y);
-                break;
-            case 4:
-                movePos = new Vector2(currentPos.x + distanceHorizontal, currentPos.y);
-                checkFront.position = new Vector2(currentPos.x + distanceHorizontal / 2, currentPos.y);
-                break;
-            default:
-                break;
-        }
+        directionVertical = direction == 1 ? 1 : direction == 2 ? -1 : 0;
+        directionHorizontal = direction == 3 ? -1 : direction == 4 ? 1 : 0;
+        movePos = new Vector2(
+            currentPos.x + directionHorizontal * distanceHorizontal,
+            currentPos.y + directionVertical * distanceVertical
+            );
+        checkFront.position = new Vector2(
+            currentPos.x + directionHorizontal * distanceHorizontal / 2,
+            currentPos.y + directionVertical * distanceVertical / 2
+            );
+        checkBack = new Vector2(
+            currentPos.x - directionHorizontal * distanceHorizontal / 4,
+            currentPos.y - directionVertical * distanceVertical / 4
+            );
 
         // Update move toward point if previous action is finished
         if (!isMoving && (KeyDirectionAny() || !JoystickNeutral()) && !Physics2D.OverlapCircle(
@@ -147,6 +140,11 @@ public class PlayerController : MonoBehaviour
         else if (isMoving)
         {
             isMoving = false;
+        }
+
+        if (Physics2D.OverlapCircle(checkBack, checkRadius / 4, pit))
+        {
+            Die();
         }
     }
 
@@ -239,5 +237,18 @@ public class PlayerController : MonoBehaviour
     private int JoystickDirection()
     {
         return JoystickUp() ? 1 : JoystickDown() ? 2 : JoystickLeft() ? 3 : JoystickRight() ? 4 : 0;
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        anim.SetTrigger("fall");
+        //sfxDead.Play();
+        Debug.Log("NOOOOOOO!");
+    }
+
+    private void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
