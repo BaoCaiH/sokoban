@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask crate;
     [SerializeField] private AudioSource sfxWalk;
     [SerializeField] private LayerMask pit;
+    [SerializeField] private AudioSource sfxFall;
 
     private bool isMoving = false;
     private int direction = 0;
@@ -243,7 +244,7 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         anim.SetTrigger("fall");
-        //sfxDead.Play();
+        sfxFall.Play();
         Debug.Log("NOOOOOOO!");
     }
 
