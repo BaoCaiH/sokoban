@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CrateMove : MonoBehaviour
 {
-    [SerializeField] public bool movable = true;
+    [SerializeField] private bool movable = true;
     [SerializeField] private float speed;
     [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private LayerMask obstacle;
@@ -50,5 +50,10 @@ public class CrateMove : MonoBehaviour
             isMoving = true;
             sfxCrateSlide.Play();
         }
+    }
+
+    public void BecomeRigid()
+    {
+        movable = false;
     }
 }

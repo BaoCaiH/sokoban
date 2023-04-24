@@ -43,7 +43,7 @@ public class CrateSink : MonoBehaviour
         {
             isSinking = true;
             landingSprite.enabled = false;
-            transform.GetComponent<CrateMove>().movable = false;
+            transform.GetComponent<CrateMove>().BecomeRigid();
 
             crateSprite.sortingOrder = 0;
             //topSprite.sortingOrder = 1;
