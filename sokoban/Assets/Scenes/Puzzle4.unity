@@ -3938,6 +3938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9c9385a09fb47e09751f956544c183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
   speed: 4
   distanceHorizontal: 1
   distanceVertical: 1
@@ -3950,6 +3951,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   sfxWalk: {fileID: 1794711098}
+  pit:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!95 &1794711097
 Animator:
   serializedVersion: 5
