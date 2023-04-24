@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     //private SpriteRenderer sprite;
     private Animator anim;
     private Collider2D foundCrate;
+    private InputAction joystickMoveAction;
 
     // Start is called before the first frame update
     private void Start()
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
         //movePoint = transform.position;
         //sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        joystickMoveAction = GetComponent<PlayerInput>().actions["Move"];
     }
 
     // Update is called once per frame
@@ -45,10 +48,10 @@ public class PlayerController : MonoBehaviour
         // Input axes
         pushVertical = Input.GetAxisRaw("Vertical");
         pushHorizontal = Input.GetAxisRaw("Horizontal");
-        pushVector = pushVertical > 0f ? Vector2.up
-            : pushVertical < 0f ? Vector2.down
-            : pushHorizontal > 0f ? Vector2.right
-            : pushHorizontal < 0f ? Vector2.left
+        pushVector = pushVertical > 0f || JoystickUp() ? Vector2.up
+            : pushVertical < 0f || JoystickDown() ? Vector2.down
+            : pushHorizontal > 0f || JoystickRight() ? Vector2.right
+            : pushHorizontal < 0f || JoystickLeft() ? Vector2.left
             : Vector2.zero;
         foundCrate = null;
 
@@ -73,11 +76,19 @@ public class PlayerController : MonoBehaviour
         }
 
         // Dequeue on release
+        //if (joystickMoveAction.ReadValue<Vector2>() == Vector2.zero)
+        //{
+        //    directions.Clear();
+        //}
         directions.Remove(KeyUpUp() ? 1 : KeyDownUp() ? 2 : KeyLeftUp() ? 3 : KeyRightUp() ? 4 : 0);
 
         // Check Direction
-        // Change direction using the first direction in the queue
-        direction = isMoving ? direction : directions.Count > 0 ? (int)directions[0] : direction;
+        // If still moving then keep direction
+        direction = isMoving ? direction
+            // If joystick not neutral then take joystick
+            : !JoystickNeutral() ? JoystickDirection()
+            // Change direction using the first direction in the queue
+            : directions.Count > 0 ? (int)directions[0] : direction;
         // Change animation state to the moving direction,
         // Otherwise snap to idle of that current direction
         anim.SetInteger("state", isMoving ? direction : 0);
@@ -106,7 +117,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Update move toward point if previous action is finished
-        if (!isMoving && KeyDirectionAny() && !Physics2D.OverlapCircle(
+        if (!isMoving && (KeyDirectionAny() || !JoystickNeutral()) && !Physics2D.OverlapCircle(
             checkFront.position,
             checkRadius, wall
         ))
@@ -153,6 +164,11 @@ public class PlayerController : MonoBehaviour
         return Vector2.Distance(transform.position, movePoint);
     }
 
+    private bool JoystickUp()
+    {
+        return joystickMoveAction.ReadValue<Vector2>().y > 0f;
+    }
+
     private bool KeyUpHold()
     {
         return Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
@@ -161,6 +177,11 @@ public class PlayerController : MonoBehaviour
     private bool KeyUpUp()
     {
         return Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+    }
+
+    private bool JoystickDown()
+    {
+        return joystickMoveAction.ReadValue<Vector2>().y < 0f;
     }
 
     private bool KeyDownHold()
@@ -173,6 +194,12 @@ public class PlayerController : MonoBehaviour
         return Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S);
     }
 
+    private bool JoystickLeft()
+    {
+        return joystickMoveAction.ReadValue<Vector2>().y == 0f
+            && joystickMoveAction.ReadValue<Vector2>().x < 0f;
+    }
+
     private bool KeyLeftHold()
     {
         return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
@@ -181,6 +208,12 @@ public class PlayerController : MonoBehaviour
     private bool KeyLeftUp()
     {
         return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
+    }
+
+    private bool JoystickRight()
+    {
+        return joystickMoveAction.ReadValue<Vector2>().y == 0f
+            && joystickMoveAction.ReadValue<Vector2>().x > 0f;
     }
 
     private bool KeyRightHold()
@@ -193,8 +226,18 @@ public class PlayerController : MonoBehaviour
         return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
     }
 
+    private bool JoystickNeutral()
+    {
+        return joystickMoveAction.ReadValue<Vector2>() == Vector2.zero;
+    }
+
     private bool KeyDirectionAny()
     {
         return KeyUpHold() || KeyDownHold() || KeyLeftHold() || KeyRightHold();
+    }
+
+    private int JoystickDirection()
+    {
+        return JoystickUp() ? 1 : JoystickDown() ? 2 : JoystickLeft() ? 3 : JoystickRight() ? 4 : 0;
     }
 }
