@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private bool isDead = false;
-    [SerializeField] private float speed;
-    [SerializeField] private float distanceHorizontal;
-    [SerializeField] private float distanceVertical;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private float distanceHorizontal = 1f;
+    [SerializeField] private float distanceVertical = 1f;
     [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private Transform checkFront;
     [SerializeField] private LayerMask wall;
