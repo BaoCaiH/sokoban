@@ -76,4 +76,9 @@ public class CrateSink : MonoBehaviour
         top.transform.position -= new Vector3(0f, offset, 0f);
         remainDistance -= offset;
     }
+
+    public bool Sunk()
+    {
+        return sunk;
+    }
 }
