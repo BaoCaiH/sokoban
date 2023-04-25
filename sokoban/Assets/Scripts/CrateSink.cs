@@ -48,7 +48,7 @@ public class CrateSink : MonoBehaviour
             landingCollider.enabled = false;
             transform.GetComponent<CrateMove>().BecomeRigid();
 
-            crateSprite.sortingOrder = 0;
+            crateSprite.sortingOrder = -1;
             //topSprite.sortingOrder = 1;
 
             sfxCrateSink.Play();
@@ -62,7 +62,7 @@ public class CrateSink : MonoBehaviour
         }
         if (sunk)
         {
-            crateSprite.sortingOrder = -1;
+            //crateSprite.sortingOrder = -1;
             topSprite.sortingOrder = 0;
             crateCollider.enabled = false;
             obstacleCollider.enabled = false;
