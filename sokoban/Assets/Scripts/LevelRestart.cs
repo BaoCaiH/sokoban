@@ -6,16 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class LevelRestart : MonoBehaviour
 {
+	[SerializeField] GameObject sceneManager;
+
+	private SceneSwitch switcher;
+
 	public Button restartButton;
 
 	void Start()
 	{
+		switcher = sceneManager.GetComponent<SceneSwitch>();
 		Button btn = restartButton.GetComponent<Button>();
 		btn.onClick.AddListener(Restart);
 	}
 
 	private void Restart()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		switcher.ChooseScene(SceneManager.GetActiveScene().name);
+		switcher.Loading();
 	}
 }
