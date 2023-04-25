@@ -184,7 +184,11 @@ PrefabInstance:
       objectReference: {fileID: 1801052660}
     - target: {fileID: 6598619435399040443, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
       propertyPath: nextScene
-      value: Puzzle1
+      value: Puzzle3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598619435399040443, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}
+      propertyPath: pitLayerIndex
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 199308c816d2f42c7ad41f0769bf043f, type: 3}

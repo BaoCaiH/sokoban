@@ -5,7 +5,7 @@ using UnityEngine;
 public class CrateMove : MonoBehaviour
 {
     [SerializeField] private bool movable = true;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 1f;
     [SerializeField] private float checkRadius = 0.45f;
     [SerializeField] private LayerMask obstacle;
     [SerializeField] private AudioSource sfxCrateSlide;
