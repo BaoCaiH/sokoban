@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitch : MonoBehaviour
 {
-    [SerializeField] int layerIndex;
-    [SerializeField] string nextScene;
+    [SerializeField] int pitLayerIndex = 8;
+    [SerializeField] string nextScene = "PuzzleSelection";
     [SerializeField] GameObject crates;
 
     private bool loading = false;
@@ -19,7 +19,7 @@ public class SceneSwitch : MonoBehaviour
         anim = transform.GetComponent<Animator>();
         foreach (BoxCollider2D collider in crates.GetComponentsInChildren<BoxCollider2D>())
         {
-            if (collider.gameObject.layer == layerIndex)
+            if (collider.gameObject.layer == pitLayerIndex)
             {
                 Debug.Log(collider);
                 objectiveCrates.Add(collider);
@@ -46,10 +46,15 @@ public class SceneSwitch : MonoBehaviour
         return cnt;
     }
 
-    private void Loading()
+    public void Loading()
     {
         loading = true;
         anim.SetTrigger("out");
+    }
+
+    public void ChooseScene(string sceneName)
+    {
+        nextScene = sceneName;
     }
 
     private void NextLevel()
