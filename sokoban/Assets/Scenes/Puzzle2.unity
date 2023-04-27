@@ -3986,6 +3986,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   sfxFall: {fileID: 1794711100}
+  portal:
+    serializedVersion: 2
+    m_Bits: 512
+  sceneManager: {fileID: 282527471}
 --- !u!95 &1794711097
 Animator:
   serializedVersion: 5
