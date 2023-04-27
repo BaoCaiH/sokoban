@@ -165,7 +165,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneName
-      value: Puzzle3
+      value: Puzzle7
       objectReference: {fileID: 0}
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneManager
@@ -858,7 +858,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneName
-      value: Puzzle4
+      value: Puzzle8
       objectReference: {fileID: 0}
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneManager
@@ -2508,7 +2508,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneName
-      value: Puzzle2
+      value: Puzzle6
       objectReference: {fileID: 0}
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneManager
@@ -2695,6 +2695,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1801052661}
     m_Modifications:
+    - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
+      propertyPath: sceneName
+      value: Puzzle5
+      objectReference: {fileID: 0}
     - target: {fileID: 1052411687, guid: fc435405589ae4adf99f16001354c3fa, type: 3}
       propertyPath: sceneManager
       value: 
