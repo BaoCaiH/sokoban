@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Puzzle8.unity
     guid: 8911dc943094a44ddb4915a638a8696a
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: d7454961a74934545a755cfaff1af42e
   m_configObjects: {}
