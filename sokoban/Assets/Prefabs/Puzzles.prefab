@@ -134,6 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c396f32dffe4efcbae7f8271734575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleSelectSceneName: PuzzleSelection
+  puzzleSelectSceneName: PuzzleSelection1
   sceneManager: {fileID: 0}
   puzzleButton: {fileID: 1902826829788674500}
