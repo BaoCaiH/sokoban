@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource sfxWalk;
     [SerializeField] private LayerMask pit;
     [SerializeField] private AudioSource sfxFall;
+    [SerializeField] private LayerMask portal;
+    [SerializeField] private GameObject sceneManager;
 
     private bool isMoving = false;
     private int direction = 0;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private int directionVertical;
     private float pushHorizontal;
     private float pushVertical;
+    private string portalScene;
     private Vector2 currentPos;
     private Vector2 movePos;
     private Vector2 movePoint;
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Collider2D foundCrate;
     private InputAction joystickMoveAction;
+    private SceneSwitch switcher;
 
     // Start is called before the first frame update
     private void Start()
@@ -40,6 +44,7 @@ public class PlayerController : MonoBehaviour
         movePos = transform.position;
         anim = GetComponent<Animator>();
         joystickMoveAction = GetComponent<PlayerInput>().actions["Move"];
+        switcher = sceneManager.GetComponent<SceneSwitch>();
     }
 
     // Update is called once per frame
@@ -147,6 +152,12 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
+
+        if (Physics2D.OverlapCircle(checkBack, checkRadius / 4, portal))
+        {
+            portalScene = Physics2D.OverlapCircle(checkBack, checkRadius / 4, portal).GetComponentInParent<PortalTeleport>().destinationSceneName;
+            Portal();
+        }
     }
 
     private void MoveTowards()
@@ -248,8 +259,27 @@ public class PlayerController : MonoBehaviour
         Debug.Log("NOOOOOOO!");
     }
 
+    private void Portal()
+    {
+        isDead = true;
+        anim.SetTrigger("teleport");
+        sfxFall.Play();
+        Debug.Log("NOOOOOOO!");
+    }
+
+    private void Teleport()
+    {
+        SwitchScene(portalScene);
+    }
+
     private void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SwitchScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void SwitchScene(string scene)
+    {
+        switcher.ChooseScene(scene);
+        switcher.Loading();
     }
 }
